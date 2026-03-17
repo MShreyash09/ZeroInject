@@ -1,6 +1,7 @@
-# IGNISIA — Real-Time Document Verification
 
-> **Hackathon Demo** — Real-time document fraud detection & prompt injection defense system.
+# ZeroInject — Real-Time Document Verification
+
+>Real-time document fraud detection & prompt injection defense system.
 
 ![Status](https://img.shields.io/badge/Status-Demo-brightgreen) ![Python](https://img.shields.io/badge/Python-3.10+-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-teal)
 
@@ -13,17 +14,17 @@ cd ignisia/backend
 pip install -r requirements.txt
 ```
 
-### 2. Set Anthropic API Key (Optional)
+### 2. Set LLM API Key (Optional)
 
 ```bash
 # Windows PowerShell
-$env:ANTHROPIC_API_KEY="your_key_here"
+$env:LLM_API_KEY="your_key_here"
 
 # Linux/Mac
-export ANTHROPIC_API_KEY=your_key_here
+export LLM_API_KEY=your_key_here
 ```
 
-> Without the API key, IGNISIA runs in **Demo Mode** — pattern matching only, no AI semantic analysis.
+> Without the API key, ZeroInject runs in **Demo Mode** — pattern matching only, no AI semantic analysis.
 
 ### 3. Start Backend Server
 
@@ -48,7 +49,7 @@ ignisia/
 │   ├── main.py                    # FastAPI app (3 endpoints)
 │   ├── analyzers/
 │   │   ├── document_analyzer.py   # Visual + text analysis
-│   │   ├── injection_detector.py  # Prompt injection detection (regex + Claude AI)
+│   │   ├── injection_detector.py  # Prompt injection detection (regex + LLM)
 │   │   └── risk_scorer.py         # Ensemble risk scoring
 │   └── requirements.txt
 ├── frontend/
@@ -87,3 +88,4 @@ ignisia/
 - **AI**: Anthropic Claude API (claude-sonnet-4-20250514)
 - **Frontend**: HTML + Tailwind CSS (CDN) + Vanilla JS
 - **State**: In-memory only (no database)
+
