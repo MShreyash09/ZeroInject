@@ -5,7 +5,7 @@
 
 ![Status](https://img.shields.io/badge/Status-Demo-brightgreen) ![Python](https://img.shields.io/badge/Python-3.10+-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-teal)
 
-## Demo Link : https://youtu.be/k6A2PMJLHTw
+## Demo Video Link : https://youtu.be/k6A2PMJLHTw
 
 ## 🚀 Quick Start
 
