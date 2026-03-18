@@ -1,6 +1,6 @@
-// ──────────────────────────────────────────────
+// ──────────────
 // Configuration
-// ──────────────────────────────────────────────
+// ──────────────
 const API_BASE = "http://localhost:8000";
 let currentResult = null;
 let selectedFile = null;
@@ -13,9 +13,9 @@ let stats = {
     fraud: 4
 };
 
-// ──────────────────────────────────────────────
+// ──────
 // Theme
-// ──────────────────────────────────────────────
+// ──────
 function toggleTheme() {
     const html = document.documentElement;
     const isDark = html.classList.contains("dark");
@@ -39,9 +39,9 @@ function loadTheme() {
     }
 }
 
-// ──────────────────────────────────────────────
+// ─────
 // Init
-// ──────────────────────────────────────────────
+// ─────
 document.addEventListener("DOMContentLoaded", () => {
     loadTheme();
     checkHealth();
@@ -49,9 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
     setupDragDrop();
 });
 
-// ──────────────────────────────────────────────
+// ─────────────
 // Health Check
-// ──────────────────────────────────────────────
+// ─────────────
 async function checkHealth() {
     try {
         const res = await fetch(`${API_BASE}/api/health`);
@@ -76,9 +76,9 @@ async function checkHealth() {
     }
 }
 
-// ──────────────────────────────────────────────
+// ───────────
 // Drag & Drop
-// ──────────────────────────────────────────────
+// ────────────
 function setupDragDrop() {
     const zone = document.getElementById("dropZone");
 
@@ -119,9 +119,9 @@ function formatSize(bytes) {
     return (bytes / 1048576).toFixed(1) + " MB";
 }
 
-// ──────────────────────────────────────────────
+// ───────
 // Analysis
-// ──────────────────────────────────────────────
+// ────────
 async function analyzeDocument() {
     if (!selectedFile) return;
 
@@ -160,9 +160,9 @@ async function runDemo(scenario) {
     }
 }
 
-// ──────────────────────────────────────────────
+// ─────────────────────
 // Processing Animation
-// ──────────────────────────────────────────────
+// ─────────────────────
 let timerInterval = null;
 
 function showProcessing() {
@@ -233,9 +233,9 @@ function hideProcessing() {
     document.getElementById("processingPanel").classList.add("hidden");
 }
 
-// ──────────────────────────────────────────────
-// Render Results
-// ──────────────────────────────────────────────
+// ───────────────
+// Result
+// ───────────────
 function renderResults(data) {
     const section = document.getElementById("resultsSection");
     section.classList.remove("hidden");
@@ -251,7 +251,7 @@ function renderResults(data) {
     // Animate score number
     animateNumber("gaugeScore", 0, score, 1200);
 
-    // Verdict badge
+    // badge
     const badge = document.getElementById("verdictBadge");
     if (data.risk_level === "VERIFIED") {
         badge.textContent = "✓ VERIFIED";
@@ -440,9 +440,9 @@ function toggleEvidence() {
     toggle.textContent = isHidden ? "▶" : "▼";
 }
 
-// ──────────────────────────────────────────────
+// ────────
 // Helpers
-// ──────────────────────────────────────────────
+// ────────
 function getScoreColor(score) {
     if (score <= 30) return "var(--accent)";
     if (score <= 60) return "#ffaa00";
@@ -482,9 +482,9 @@ function animateNumber(elementId, start, end, duration) {
     requestAnimationFrame(update);
 }
 
-// ──────────────────────────────────────────────
+// ──────
 // Stats
-// ──────────────────────────────────────────────
+// ──────
 function animateStats() {
     animateStatNumber("statDocs", stats.docs);
     animateStatNumber("statInjections", stats.injections);
@@ -535,9 +535,9 @@ function updateStats(data) {
     document.getElementById("statLatency").textContent = stats.latency + "ms";
 }
 
-// ──────────────────────────────────────────────
+// ──────
 // Export
-// ──────────────────────────────────────────────
+// ──────
 function exportReport() {
     if (!currentResult) return;
     const blob = new Blob([JSON.stringify(currentResult, null, 2)], { type: "application/json" });
