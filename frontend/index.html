@@ -7,351 +7,17 @@
     <title>ZeroInject — Real-Time Document Verification</title>
     <meta name="description"
         content="ZeroInject: Real-time document verification system with anti-prompt-injection defense. Detect synthetic fraud in document pipelines.">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
-    <style>
-        /* ========== THEME VARIABLES ========== */
-        :root {
-            --accent: #00FF9C;
-            --accent-dim: #00cc7d;
-            --accent-deep: #00a86b;
-            --red: #ff4444;
-            --yellow: #ffaa00;
-            --purple: #a855f7;
-            --blue: #3b82f6;
-        }
-
-        /* Dark theme (default) */
-        html.dark {
-            --bg-primary: #0A0A0A;
-            --bg-secondary: #111111;
-            --bg-tertiary: #1a1a1a;
-            --bg-overlay: rgba(17, 17, 17, 0.8);
-            --bg-header: rgba(10, 10, 10, 0.9);
-            --border-primary: #1f1f1f;
-            --border-secondary: #333333;
-            --border-subtle: #2a2a2a;
-            --text-heading: #ffffff;
-            --text-primary: #e5e5e5;
-            --text-secondary: #999999;
-            --text-muted: #737373;
-            --text-faint: #555555;
-            --text-ghost: #333333;
-            --gauge-track: #1f1f1f;
-            --bar-track: #1a1a1a;
-            --card-shadow: rgba(0, 0, 0, 0.3);
-            --grid-line: rgba(0, 255, 156, 0.03);
-            --shimmer: rgba(0, 255, 156, 0.08);
-            --drop-border: rgba(0, 255, 156, 0.3);
-            --drop-hover-bg: rgba(0, 255, 156, 0.05);
-            --glow-strength: 1;
-        }
-
-        /* Light theme */
-        html.light {
-            --bg-primary: #f5f7fa;
-            --bg-secondary: #ffffff;
-            --bg-tertiary: #eef1f5;
-            --bg-overlay: rgba(255, 255, 255, 0.85);
-            --bg-header: rgba(245, 247, 250, 0.92);
-            --border-primary: #e0e4ea;
-            --border-secondary: #cdd3dc;
-            --border-subtle: #dfe3e9;
-            --text-heading: #111827;
-            --text-primary: #1f2937;
-            --text-secondary: #6b7280;
-            --text-muted: #9ca3af;
-            --text-faint: #d1d5db;
-            --text-ghost: #e5e7eb;
-            --gauge-track: #e0e4ea;
-            --bar-track: #eef1f5;
-            --card-shadow: rgba(0, 0, 0, 0.06);
-            --grid-line: rgba(0, 180, 100, 0.05);
-            --shimmer: rgba(0, 180, 100, 0.06);
-            --drop-border: rgba(0, 180, 100, 0.35);
-            --drop-hover-bg: rgba(0, 180, 100, 0.06);
-            --glow-strength: 0;
-        }
-
-        /* Light theme accent adjustments (deeper green for readability) */
-        html.light {
-            --accent: #00a86b;
-            --accent-dim: #008f5b;
-        }
-
-        * {
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            transition: background 0.4s ease, color 0.4s ease;
-        }
-
-        .mono {
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* Smooth transition for theme-sensitive elements */
-        header,
-        footer,
-        .layer-card,
-        .drop-zone,
-        section>div {
-            transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
-        }
-
-        /* ========== GLOW EFFECTS ========== */
-        .glow-text {
-            text-shadow: 0 0 20px rgba(0, 255, 156, calc(0.5 * var(--glow-strength))),
-                0 0 40px rgba(0, 255, 156, calc(0.3 * var(--glow-strength))),
-                0 0 80px rgba(0, 255, 156, calc(0.1 * var(--glow-strength)));
-        }
-
-        .glow-btn {
-            box-shadow: 0 0 20px rgba(0, 255, 156, calc(0.3 * var(--glow-strength))),
-                0 0 40px rgba(0, 255, 156, calc(0.1 * var(--glow-strength)));
-            transition: all 0.3s ease;
-        }
-
-        .glow-btn:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 156, calc(0.5 * var(--glow-strength))),
-                0 0 60px rgba(0, 255, 156, calc(0.2 * var(--glow-strength)));
-            transform: translateY(-2px);
-        }
-
-        /* Light mode button gets a clean shadow instead of glow */
-        html.light .glow-btn {
-            box-shadow: 0 2px 8px rgba(0, 168, 107, 0.25);
-        }
-
-        html.light .glow-btn:hover {
-            box-shadow: 0 4px 16px rgba(0, 168, 107, 0.35);
-        }
-
-        /* Pulse animation for status pill */
-        @keyframes pulse-glow {
-
-            0%,
-            100% {
-                opacity: 1;
-                box-shadow: 0 0 5px rgba(0, 255, 156, 0.5);
-            }
-
-            50% {
-                opacity: 0.7;
-                box-shadow: 0 0 15px rgba(0, 255, 156, 0.8);
-            }
-        }
-
-        html.dark .pulse-status {
-            animation: pulse-glow 2s ease-in-out infinite;
-        }
-
-        html.light .pulse-status {
-            animation: none;
-        }
-
-        /* Spinner */
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .spinner {
-            animation: spin 1s linear infinite;
-        }
-
-        /* Typing animation */
-        @keyframes fadeSlideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .animate-layer {
-            animation: fadeSlideIn 0.4s ease-out forwards;
-            opacity: 0;
-        }
-
-        /* Score gauge */
-        .gauge-circle {
-            transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Score fill bar */
-        @keyframes fillBar {
-            from {
-                width: 0%;
-            }
-        }
-
-        .score-bar-fill {
-            animation: fillBar 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        /* Card hover */
-        .layer-card {
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-primary);
-            background: var(--bg-secondary);
-        }
-
-        .layer-card:hover {
-            border-color: rgba(0, 168, 107, 0.35);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px var(--card-shadow);
-        }
-
-        /* Drag-and-drop */
-        .drop-zone {
-            border: 2px dashed var(--drop-border);
-            transition: all 0.3s ease;
-        }
-
-        .drop-zone.dragover {
-            border-color: var(--accent);
-            background: var(--drop-hover-bg);
-            box-shadow: 0 0 30px rgba(0, 168, 107, 0.1);
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        html.dark ::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 3px;
-        }
-
-        html.dark ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        html.light ::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 3px;
-        }
-
-        html.light ::-webkit-scrollbar-thumb:hover {
-            background: #aaa;
-        }
-
-        /* Shimmer */
-        @keyframes shimmer {
-            0% {
-                background-position: -200% 0;
-            }
-
-            100% {
-                background-position: 200% 0;
-            }
-        }
-
-        .shimmer-bg {
-            background: linear-gradient(90deg, transparent, var(--shimmer), transparent);
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
-        }
-
-        /* Grid background */
-        .grid-bg {
-            background-image:
-                linear-gradient(var(--grid-line) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-
-        /* Threat / safe banners */
-        .threat-banner {
-            background: linear-gradient(135deg, rgba(255, 68, 68, 0.15), rgba(255, 68, 68, 0.05));
-            border: 1px solid rgba(255, 68, 68, 0.3);
-        }
-
-        .safe-banner {
-            background: linear-gradient(135deg, rgba(0, 168, 107, 0.15), rgba(0, 168, 107, 0.05));
-            border: 1px solid rgba(0, 168, 107, 0.3);
-        }
-
-        /* Theme toggle button */
-        .theme-toggle {
-            position: relative;
-            width: 52px;
-            height: 28px;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            outline: none;
-            padding: 0;
-        }
-
-        html.dark .theme-toggle {
-            background: #2a2a2a;
-        }
-
-        html.light .theme-toggle {
-            background: #dfe3e9;
-        }
-
-        .theme-toggle .toggle-knob {
-            position: absolute;
-            top: 3px;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            line-height: 1;
-        }
-
-        html.dark .theme-toggle .toggle-knob {
-            left: 3px;
-            background: #111;
-            box-shadow: 0 0 8px rgba(0, 255, 156, 0.3);
-        }
-
-        html.light .theme-toggle .toggle-knob {
-            left: 27px;
-            background: #ffffff;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .layer-grid {
-                grid-template-columns: 1fr !important;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr 1fr !important;
-            }
-        }
-    </style>
+        
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="min-h-screen grid-bg">
 
-    <!-- ============ HEADER ============ -->
     <header class="border-b sticky top-0 z-50 backdrop-blur-xl"
         style="border-color:var(--border-primary);background:var(--bg-header)">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -365,12 +31,10 @@
                 </p>
             </div>
             <div class="flex items-center gap-3">
-                <!-- Theme Toggle -->
                 <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" title="Toggle light/dark mode"
                     aria-label="Toggle theme">
                     <div class="toggle-knob" id="toggleKnob">🌙</div>
                 </button>
-                <!-- Status Pill -->
                 <div id="statusPill"
                     class="flex items-center gap-2 px-3 py-1.5 rounded-full pulse-status cursor-pointer"
                     onclick="checkHealth()"
@@ -385,7 +49,6 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
 
-        <!-- ============ UPLOAD ZONE ============ -->
         <section id="uploadSection">
             <div id="dropZone" class="drop-zone rounded-2xl p-8 sm:p-12 text-center cursor-pointer"
                 style="background:var(--bg-overlay)" onclick="document.getElementById('fileInput').click()">
@@ -408,7 +71,6 @@
                 </div>
             </div>
 
-            <!-- Analyze Button -->
             <div class="flex flex-col items-center gap-4 mt-6">
                 <button id="analyzeBtn" onclick="analyzeDocument()" disabled
                     class="px-8 py-3 rounded-xl font-bold text-black glow-btn disabled:opacity-30 disabled:cursor-not-allowed disabled:shadow-none text-sm sm:text-base transition-all"
@@ -416,7 +78,6 @@
                     🔍 ANALYZE DOCUMENT
                 </button>
 
-                <!-- Demo Scenario Buttons -->
                 <div class="flex flex-wrap justify-center gap-2 sm:gap-3">
                     <span class="text-xs self-center mr-1" style="color:var(--text-faint)">Demo:</span>
                     <button onclick="runDemo('clean')"
@@ -443,7 +104,6 @@
             </div>
         </section>
 
-        <!-- ============ PROCESSING PANEL ============ -->
         <section id="processingPanel" class="hidden">
             <div class="rounded-2xl p-6 sm:p-8 shimmer-bg"
                 style="border:1px solid var(--border-primary);background:var(--bg-overlay)">
@@ -462,14 +122,11 @@
             </div>
         </section>
 
-        <!-- ============ RESULTS DASHBOARD ============ -->
         <section id="resultsSection" class="hidden space-y-6">
 
-            <!-- TOP: Final Verdict -->
             <div class="rounded-2xl p-6 sm:p-8"
                 style="border:1px solid var(--border-primary);background:var(--bg-secondary)">
                 <div class="flex flex-col sm:flex-row items-center gap-6 sm:gap-10">
-                    <!-- Risk Gauge -->
                     <div class="relative flex-shrink-0">
                         <svg width="140" height="140" viewBox="0 0 100 100" class="transform -rotate-90">
                             <circle cx="50" cy="50" r="45" fill="none" stroke="var(--gauge-track)" stroke-width="8" />
@@ -484,7 +141,6 @@
                         </div>
                     </div>
 
-                    <!-- Verdict Info -->
                     <div class="flex-1 text-center sm:text-left">
                         <div id="verdictBadge"
                             class="inline-block px-5 py-2 rounded-xl text-sm font-black uppercase tracking-widest mb-3">
@@ -503,10 +159,8 @@
                 </div>
             </div>
 
-            <!-- MIDDLE: Layer Cards -->
             <div class="layer-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="layerCards"></div>
 
-            <!-- BOTTOM: Audit Trail -->
             <div class="rounded-2xl p-6" style="border:1px solid var(--border-primary);background:var(--bg-secondary)">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-base font-bold flex items-center gap-2" style="color:var(--text-heading)">
@@ -519,7 +173,6 @@
                 </div>
                 <div id="auditTrail" class="space-y-2"></div>
 
-                <!-- Evidence Section -->
                 <div id="evidenceSection" class="hidden mt-4 pt-4" style="border-top:1px solid var(--border-primary)">
                     <button onclick="toggleEvidence()"
                         class="text-xs hover:underline mb-2 cursor-pointer flex items-center gap-1"
@@ -532,7 +185,6 @@
         </section>
     </main>
 
-    <!-- ============ STATS FOOTER ============ -->
     <footer class="mt-12" style="border-top:1px solid var(--border-primary);background:var(--bg-primary)">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
             <div class="stats-grid grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
@@ -558,558 +210,7 @@
         </div>
     </footer>
 
-    <script>
-        // ──────────────────────────────────────────────
-        // Configuration
-        // ──────────────────────────────────────────────
-        const API_BASE = "http://localhost:8000";
-        let currentResult = null;
-        let selectedFile = null;
-
-        // Simulated running stats
-        let stats = {
-            docs: 1247,
-            injections: 23,
-            latency: 87,
-            fraud: 4
-        };
-
-        // ──────────────────────────────────────────────
-        // Theme
-        // ──────────────────────────────────────────────
-        function toggleTheme() {
-            const html = document.documentElement;
-            const isDark = html.classList.contains("dark");
-            html.classList.remove("dark", "light");
-            html.classList.add(isDark ? "light" : "dark");
-            document.getElementById("toggleKnob").textContent = isDark ? "☀️" : "🌙";
-            localStorage.setItem("ZeroInject-theme", isDark ? "light" : "dark");
-        }
-
-        function loadTheme() {
-            const saved = localStorage.getItem("ZeroInject-theme");
-            const html = document.documentElement;
-            if (saved === "light") {
-                html.classList.remove("dark");
-                html.classList.add("light");
-                document.getElementById("toggleKnob").textContent = "☀️";
-            } else {
-                html.classList.remove("light");
-                html.classList.add("dark");
-                document.getElementById("toggleKnob").textContent = "🌙";
-            }
-        }
-
-        // ──────────────────────────────────────────────
-        // Init
-        // ──────────────────────────────────────────────
-        document.addEventListener("DOMContentLoaded", () => {
-            loadTheme();
-            checkHealth();
-            animateStats();
-            setupDragDrop();
-        });
-
-        // ──────────────────────────────────────────────
-        // Health Check
-        // ──────────────────────────────────────────────
-        async function checkHealth() {
-            try {
-                const res = await fetch(`${API_BASE}/api/health`);
-                const data = await res.json();
-                const dot = document.getElementById("statusDot");
-                const txt = document.getElementById("statusText");
-                if (data.status === "online") {
-                    dot.className = "w-2 h-2 rounded-full bg-[#00FF9C]";
-                    txt.textContent = "● ENGINE ONLINE";
-                    txt.style.color = "var(--accent)";
-                    if (!data.ai_available) {
-                        txt.textContent = "● ENGINE ONLINE (AI Offline)";
-                        txt.style.color = "#ffaa00";
-                    }
-                }
-            } catch {
-                const dot = document.getElementById("statusDot");
-                const txt = document.getElementById("statusText");
-                dot.className = "w-2 h-2 rounded-full bg-[#ff4444]";
-                txt.textContent = "● ENGINE OFFLINE";
-                txt.style.color = "#ff4444";
-            }
-        }
-
-        // ──────────────────────────────────────────────
-        // Drag & Drop
-        // ──────────────────────────────────────────────
-        function setupDragDrop() {
-            const zone = document.getElementById("dropZone");
-
-            zone.addEventListener("dragover", (e) => {
-                e.preventDefault();
-                zone.classList.add("dragover");
-            });
-            zone.addEventListener("dragleave", () => {
-                zone.classList.remove("dragover");
-            });
-            zone.addEventListener("drop", (e) => {
-                e.preventDefault();
-                zone.classList.remove("dragover");
-                if (e.dataTransfer.files.length > 0) {
-                    handleFile(e.dataTransfer.files[0]);
-                }
-            });
-        }
-
-        function handleFileSelect(event) {
-            if (event.target.files.length > 0) {
-                handleFile(event.target.files[0]);
-            }
-        }
-
-        function handleFile(file) {
-            selectedFile = file;
-            document.getElementById("uploadPrompt").classList.add("hidden");
-            document.getElementById("fileInfo").classList.remove("hidden");
-            document.getElementById("fileName").textContent = file.name;
-            document.getElementById("fileSize").textContent = formatSize(file.size);
-            document.getElementById("analyzeBtn").disabled = false;
-        }
-
-        function formatSize(bytes) {
-            if (bytes < 1024) return bytes + " B";
-            if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB";
-            return (bytes / 1048576).toFixed(1) + " MB";
-        }
-
-        // ──────────────────────────────────────────────
-        // Analysis
-        // ──────────────────────────────────────────────
-        async function analyzeDocument() {
-            if (!selectedFile) return;
-
-            showProcessing();
-
-            const formData = new FormData();
-            formData.append("document", selectedFile);
-
-            try {
-                const res = await fetch(`${API_BASE}/api/verify`, {
-                    method: "POST",
-                    body: formData
-                });
-                const data = await res.json();
-                await finishProcessing(data);
-            } catch (err) {
-                hideProcessing();
-                alert("Error connecting to ZeroInject backend. Make sure the server is running on " + API_BASE);
-            }
-        }
-
-        async function runDemo(scenario) {
-            showProcessing();
-
-            try {
-                const res = await fetch(`${API_BASE}/api/demo`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ scenario })
-                });
-                const data = await res.json();
-                await finishProcessing(data);
-            } catch (err) {
-                hideProcessing();
-                alert("Error connecting to ZeroInject backend. Make sure the server is running on " + API_BASE);
-            }
-        }
-
-        // ──────────────────────────────────────────────
-        // Processing Animation
-        // ──────────────────────────────────────────────
-        let timerInterval = null;
-
-        function showProcessing() {
-            document.getElementById("processingPanel").classList.remove("hidden");
-            document.getElementById("resultsSection").classList.add("hidden");
-            document.getElementById("layerFeed").innerHTML = "";
-
-            let ms = 0;
-            const timerEl = document.getElementById("processingTimer");
-            timerInterval = setInterval(() => {
-                ms += 1;
-                timerEl.textContent = ms + "ms";
-            }, 1);
-
-            // Animate layers appearing one by one
-            const layers = [
-                { text: "⟳ Layer 1: Visual Integrity Scan...", delay: 200 },
-                { text: "⟳ Layer 2: Text Authenticity Analysis...", delay: 500 },
-                { text: "⟳ Layer 3: Prompt Injection Detection...", delay: 900 },
-                { text: "⟳ Layer 4: Behavioral Pattern Check...", delay: 1200 },
-                { text: "⟳ Layer 5: Ensemble Risk Scoring...", delay: 1500 },
-            ];
-
-            layers.forEach(({ text, delay }) => {
-                setTimeout(() => {
-                    const feed = document.getElementById("layerFeed");
-                    const div = document.createElement("div");
-                    div.className = "animate-layer flex items-center gap-2";
-                    div.style.color = "var(--text-secondary)";
-                    div.innerHTML = `<span style="color:var(--accent)">▸</span> ${text}`;
-                    feed.appendChild(div);
-                }, delay);
-            });
-        }
-
-        async function finishProcessing(data) {
-            // Wait for animations to complete
-            await new Promise(r => setTimeout(r, 1800));
-
-            // Mark all layers as done
-            const feed = document.getElementById("layerFeed");
-            feed.querySelectorAll("div").forEach(el => {
-                el.innerHTML = el.innerHTML.replace("⟳", "✓");
-                el.style.color = "var(--accent)";
-            });
-
-            // Add completion line
-            const done = document.createElement("div");
-            done.className = "animate-layer font-bold mt-2";
-            done.style.color = "var(--accent)";
-            done.innerHTML = `✓ Analysis complete — ${data.processing_time_ms}ms`;
-            feed.appendChild(done);
-
-            clearInterval(timerInterval);
-            document.getElementById("processingTimer").textContent = data.processing_time_ms + "ms";
-
-            await new Promise(r => setTimeout(r, 600));
-            document.getElementById("processingPanel").classList.add("hidden");
-
-            // Show results
-            currentResult = data;
-            renderResults(data);
-            updateStats(data);
-        }
-
-        function hideProcessing() {
-            clearInterval(timerInterval);
-            document.getElementById("processingPanel").classList.add("hidden");
-        }
-
-        // ──────────────────────────────────────────────
-        // Render Results
-        // ──────────────────────────────────────────────
-        function renderResults(data) {
-            const section = document.getElementById("resultsSection");
-            section.classList.remove("hidden");
-
-            // Score gauge
-            const score = data.final_score;
-            const gauge = document.getElementById("gaugeCircle");
-            const circumference = 283;
-            const offset = circumference - (score / 100) * circumference;
-            gauge.style.stroke = getScoreColor(score);
-            gauge.style.strokeDashoffset = offset;
-
-            // Animate score number
-            animateNumber("gaugeScore", 0, score, 1200);
-
-            // Verdict badge
-            const badge = document.getElementById("verdictBadge");
-            if (data.risk_level === "VERIFIED") {
-                badge.textContent = "✓ VERIFIED";
-                badge.className = "inline-block px-5 py-2 rounded-xl text-sm font-black uppercase tracking-widest mb-3 bg-[#00FF9C]/15 text-[#00a86b] border border-[#00FF9C]/30";
-                badge.style.color = "var(--accent)";
-            } else if (data.risk_level === "REVIEW") {
-                badge.textContent = "⚠ REVIEW REQUIRED";
-                badge.className = "inline-block px-5 py-2 rounded-xl text-sm font-black uppercase tracking-widest mb-3 bg-[#ffaa00]/15 text-[#ffaa00] border border-[#ffaa00]/30";
-                badge.style.color = "#ffaa00";
-            } else {
-                badge.textContent = "✕ BLOCKED";
-                badge.className = "inline-block px-5 py-2 rounded-xl text-sm font-black uppercase tracking-widest mb-3 bg-[#ff4444]/15 text-[#ff4444] border border-[#ff4444]/30";
-                badge.style.color = "#ff4444";
-            }
-
-            // Info fields
-            document.getElementById("auditId").textContent = data.audit_id;
-            const timeEl = document.getElementById("procTime");
-            timeEl.innerHTML = `${data.processing_time_ms}ms`;
-            if (data.processing_time_ms < 100) {
-                timeEl.innerHTML += ` <span style="color:var(--accent)">(< 100ms ✓)</span>`;
-            }
-            const decisionEl = document.getElementById("decisionText");
-            decisionEl.textContent = data.decision;
-            decisionEl.style.color = data.decision === "APPROVE" ? "var(--accent)" : data.decision === "REVIEW" ? "#ffaa00" : "#ff4444";
-
-            document.getElementById("recommendation").textContent = data.recommendation;
-
-            // Layer cards
-            renderLayerCards(data.layers, data);
-
-            // Audit trail
-            renderAuditTrail(data.audit_trail);
-
-            // Evidence
-            renderEvidence(data.layers?.prompt_injection);
-
-            // Scroll to results
-            section.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-
-        function renderLayerCards(layers, data) {
-            const container = document.getElementById("layerCards");
-            container.innerHTML = "";
-
-            const layerConfig = [
-                { key: "visual_integrity", icon: "🖼️", name: "Visual Integrity" },
-                { key: "text_authenticity", icon: "📝", name: "Text Authenticity" },
-                { key: "prompt_injection", icon: "🛡️", name: "Prompt Injection Defense", highlight: true },
-                { key: "behavioral_patterns", icon: "🔍", name: "Behavioral Patterns" },
-            ];
-
-            layerConfig.forEach(({ key, icon, name, highlight }) => {
-                const layer = layers[key] || {};
-                const card = document.createElement("div");
-                let extraClass = highlight ? "lg:col-span-1" : "";
-                card.className = `layer-card rounded-xl p-4 ${extraClass}`;
-                if (highlight) card.style.boxShadow = "inset 0 0 0 1px rgba(0,168,107,0.2)";
-
-                const statusColor = layer.status === "PASS" ? "var(--accent)" : layer.status === "WARN" ? "#ffaa00" : "#ff4444";
-                const statusBg = layer.status === "PASS"
-                    ? "background:rgba(0,168,107,0.1);color:var(--accent)"
-                    : layer.status === "WARN"
-                        ? "background:rgba(255,170,0,0.1);color:#ffaa00"
-                        : "background:rgba(255,68,68,0.1);color:#ff4444";
-
-                let bannerHtml = "";
-                if (highlight) {
-                    if (layer.status === "FAIL") {
-                        bannerHtml = `<div class="threat-banner rounded-lg px-3 py-1.5 text-center mb-3"><span class="text-xs font-bold" style="color:#ff4444">🚨 THREAT DETECTED</span></div>`;
-                    } else {
-                        bannerHtml = `<div class="safe-banner rounded-lg px-3 py-1.5 text-center mb-3"><span class="text-xs font-bold" style="color:var(--accent)">✓ NO THREAT DETECTED</span></div>`;
-                    }
-                }
-
-                const flagsHtml = (layer.flags || []).map(f =>
-                    `<span class="inline-block text-[10px] px-2 py-0.5 rounded-full mb-1 mr-1" style="background:var(--bg-tertiary);border:1px solid var(--border-secondary);color:var(--text-secondary)">${truncate(f, 50)}</span>`
-                ).join("");
-
-                card.innerHTML = `
-                ${bannerHtml}
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <span class="text-lg">${icon}</span>
-                        <span class="text-xs font-bold uppercase tracking-wide" style="color:var(--text-heading)">${name}</span>
-                    </div>
-                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="${statusBg}">${layer.status || "N/A"}</span>
-                </div>
-                <div class="mb-3">
-                    <div class="flex justify-between text-[10px] mb-1" style="color:var(--text-muted)">
-                        <span>Score</span>
-                        <span class="font-semibold" style="color:${statusColor}">${layer.score ?? 0}/100</span>
-                    </div>
-                    <div class="h-1.5 rounded-full overflow-hidden" style="background:var(--bar-track)">
-                        <div class="h-full rounded-full score-bar-fill" style="width:${layer.score ?? 0}%;background:${statusColor}"></div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap gap-0.5">${flagsHtml}</div>
-            `;
-                container.appendChild(card);
-            });
-
-            // 5th card: Decision & Audit
-            const decisionCard = document.createElement("div");
-            decisionCard.className = "layer-card rounded-xl p-4";
-            const decColor = data.decision === "APPROVE" ? "var(--accent)" : data.decision === "REVIEW" ? "#ffaa00" : "#ff4444";
-            const decBg = data.decision === "APPROVE"
-                ? "background:rgba(0,168,107,0.1);color:var(--accent)"
-                : data.decision === "REVIEW"
-                    ? "background:rgba(255,170,0,0.1);color:#ffaa00"
-                    : "background:rgba(255,68,68,0.1);color:#ff4444";
-            decisionCard.innerHTML = `
-            <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center gap-2">
-                    <span class="text-lg">⚖️</span>
-                    <span class="text-xs font-bold uppercase tracking-wide" style="color:var(--text-heading)">Decision & Audit</span>
-                </div>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="${decBg}">${data.decision}</span>
-            </div>
-            <div class="mb-3">
-                <div class="flex justify-between text-[10px] mb-1" style="color:var(--text-muted)">
-                    <span>Final Score</span>
-                    <span class="font-semibold" style="color:${decColor}">${data.final_score}/100</span>
-                </div>
-                <div class="h-1.5 rounded-full overflow-hidden" style="background:var(--bar-track)">
-                    <div class="h-full rounded-full score-bar-fill" style="width:${data.final_score}%;background:${decColor}"></div>
-                </div>
-            </div>
-            <div class="space-y-1 text-[10px]" style="color:var(--text-secondary)">
-                <p>🕐 ${data.processing_time_ms}ms${data.processing_time_ms < 100 ? " ✓" : ""}</p>
-                <p>🔑 ${data.audit_id}</p>
-                <p>📊 ${data.audit_trail?.length || 0} audit events</p>
-            </div>
-        `;
-            container.appendChild(decisionCard);
-        }
-
-        function renderAuditTrail(trail) {
-            const container = document.getElementById("auditTrail");
-            container.innerHTML = "";
-
-            (trail || []).forEach((entry, i) => {
-                const layerColor = getLayerColor(entry.layer);
-                const div = document.createElement("div");
-                div.className = "flex items-start gap-3 text-xs py-2";
-                div.style.borderBottom = "1px solid var(--border-primary)";
-                div.innerHTML = `
-                <div class="flex-shrink-0 w-1.5 h-1.5 rounded-full mt-1.5" style="background:${layerColor}"></div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <span class="font-semibold" style="color:var(--text-heading)">${entry.action}</span>
-                        <span class="mono text-[10px]" style="color:var(--text-faint)">${entry.layer}</span>
-                    </div>
-                    <p class="mt-0.5 truncate" style="color:var(--text-muted)">${entry.result}</p>
-                </div>
-            `;
-                container.appendChild(div);
-            });
-        }
-
-        function renderEvidence(injectionLayer) {
-            const section = document.getElementById("evidenceSection");
-            const content = document.getElementById("evidenceContent");
-
-            if (!injectionLayer?.evidence?.length) {
-                section.classList.add("hidden");
-                return;
-            }
-
-            section.classList.remove("hidden");
-            content.innerHTML = "";
-
-            injectionLayer.evidence.forEach(e => {
-                const div = document.createElement("div");
-                div.className = "text-xs mono rounded-lg px-3 py-2";
-                div.style.cssText = "background:var(--bg-tertiary);border:1px solid var(--border-secondary);color:#ff4444";
-                div.textContent = `"${e}"`;
-                content.appendChild(div);
-            });
-        }
-
-        function toggleEvidence() {
-            const content = document.getElementById("evidenceContent");
-            const toggle = document.getElementById("evidenceToggle");
-            const isHidden = content.classList.toggle("hidden");
-            toggle.textContent = isHidden ? "▶" : "▼";
-        }
-
-        // ──────────────────────────────────────────────
-        // Helpers
-        // ──────────────────────────────────────────────
-        function getScoreColor(score) {
-            if (score <= 30) return "var(--accent)";
-            if (score <= 60) return "#ffaa00";
-            return "#ff4444";
-        }
-
-        function getLayerColor(layer) {
-            const colors = {
-                visual_integrity: "var(--accent)",
-                text_authenticity: "#3b82f6",
-                prompt_injection: "#ff4444",
-                behavioral_patterns: "#a855f7",
-                ensemble: "#ffaa00",
-                system: "#737373",
-            };
-            return colors[layer] || "#737373";
-        }
-
-        function truncate(str, max) {
-            return str.length > max ? str.slice(0, max) + "…" : str;
-        }
-
-        function animateNumber(elementId, start, end, duration) {
-            const el = document.getElementById(elementId);
-            const range = end - start;
-            const startTime = performance.now();
-
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3);
-                const current = Math.round(start + range * eased);
-                el.textContent = current;
-                el.style.color = getScoreColor(current);
-                if (progress < 1) requestAnimationFrame(update);
-            }
-            requestAnimationFrame(update);
-        }
-
-        // ──────────────────────────────────────────────
-        // Stats
-        // ──────────────────────────────────────────────
-        function animateStats() {
-            animateStatNumber("statDocs", stats.docs);
-            animateStatNumber("statInjections", stats.injections);
-            document.getElementById("statLatency").textContent = stats.latency + "ms";
-            animateStatNumber("statFraud", stats.fraud);
-
-            setInterval(() => {
-                stats.docs += Math.floor(Math.random() * 3);
-                document.getElementById("statDocs").textContent = stats.docs.toLocaleString();
-            }, 5000);
-
-            setInterval(() => {
-                if (Math.random() > 0.7) {
-                    stats.injections += 1;
-                    document.getElementById("statInjections").textContent = stats.injections;
-                }
-            }, 8000);
-        }
-
-        function animateStatNumber(id, target) {
-            const el = document.getElementById(id);
-            let current = 0;
-            const step = Math.max(1, Math.floor(target / 40));
-            const interval = setInterval(() => {
-                current += step;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(interval);
-                }
-                el.textContent = id === "statLatency" ? current + "ms" : current.toLocaleString();
-            }, 30);
-        }
-
-        function updateStats(data) {
-            stats.docs += 1;
-            document.getElementById("statDocs").textContent = stats.docs.toLocaleString();
-
-            if (data.layers?.prompt_injection?.status === "FAIL") {
-                stats.injections += 1;
-                document.getElementById("statInjections").textContent = stats.injections;
-            }
-            if (data.layers?.behavioral_patterns?.template_reuse) {
-                stats.fraud += 1;
-                document.getElementById("statFraud").textContent = stats.fraud;
-            }
-
-            stats.latency = Math.round((stats.latency * 0.8 + data.processing_time_ms * 0.2));
-            document.getElementById("statLatency").textContent = stats.latency + "ms";
-        }
-
-        // ──────────────────────────────────────────────
-        // Export
-        // ──────────────────────────────────────────────
-        function exportReport() {
-            if (!currentResult) return;
-            const blob = new Blob([JSON.stringify(currentResult, null, 2)], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `ZeroInject_report_${currentResult.audit_id || "unknown"}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
