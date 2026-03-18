@@ -87,7 +87,7 @@ ignisia/
 ## ⚙️ Tech Stack
 
 - **Backend**: Python, FastAPI, Uvicorn
-- **AI**: Anthropic Claude API (claude-sonnet-4-20250514)
+- **AI**: A good LLM for semantic Analysis
 - **Frontend**: HTML + Tailwind CSS (CDN) + Vanilla JS
 - **State**: In-memory only (no database)
 
