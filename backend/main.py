@@ -1,5 +1,5 @@
 """
-IGNISIA — Real-Time Document Verification Engine
+ZeroInject — Real-Time Document Verification Engine
 FastAPI Backend with multi-layer fraud detection and prompt injection defense.
 """
 
