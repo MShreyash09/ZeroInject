@@ -1,5 +1,5 @@
 """
-IGNISIA — Document Analyzer Module
+ZeroInject — Document Analyzer Module
 Visual integrity checks + text authenticity analysis
 """
 
