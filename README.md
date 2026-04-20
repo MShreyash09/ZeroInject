@@ -12,7 +12,7 @@
 ### 1. Install Dependencies
 
 ```bash
-cd ignisia/backend
+cd backend
 pip install -r requirements.txt
 ```
 
@@ -31,13 +31,13 @@ export LLM_API_KEY=your_key_here
 ### 3. Start Backend Server
 
 ```bash
-cd ignisia/backend
+cd backend
 uvicorn main:app --reload --port 8000
 ```
 
 ### 4. Open Frontend
 
-Open `ignisia/frontend/index.html` in your browser.
+Open `frontend/index.html` in your browser.
 
 The status pill in the header should show **● ENGINE ONLINE** in green.
 
@@ -46,7 +46,7 @@ The status pill in the header should show **● ENGINE ONLINE** in green.
 ## 🏗️ Architecture
 
 ```
-ignisia/
+ZeroInject/
 ├── backend/
 │   ├── main.py                    # FastAPI app (3 endpoints)
 │   ├── analyzers/
