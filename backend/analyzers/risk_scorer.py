@@ -1,5 +1,5 @@
 """
-IGNISIA — Risk Scorer Module
+ZeroInject — Risk Scorer Module
 Ensemble risk scoring with weighted analysis layers
 """
 
