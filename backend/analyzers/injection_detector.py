@@ -1,5 +1,5 @@
 """
-IGNISIA — Prompt Injection Detector
+ZeroInject — Prompt Injection Detector
 Two-stage detection: regex pattern matching + Claude API semantic analysis
 """
 
