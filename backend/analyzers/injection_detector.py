@@ -1,6 +1,6 @@
 """
 ZeroInject — Prompt Injection Detector
-Two-stage detection: regex pattern matching + Claude API semantic analysis
+Two-stage detection: regex pattern matching + LLM API semantic analysis
 """
 
 import re
@@ -17,7 +17,7 @@ def detect_prompt_injection(text: str) -> dict:
     """
     Detect prompt injection attacks in document text.
     Stage 1: Fast regex pattern matching (<5ms)
-    Stage 2: Claude API semantic analysis (if API key available)
+    Stage 2: LLM API semantic analysis (if API key available)
     """
     if not text or text.startswith("["):
         return {
